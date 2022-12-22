@@ -18,12 +18,20 @@ export const getStaticPaths = () => {
 };
 
 const Blog = ({ title, image, post }) => {
+  const splitTitle = title.split("\n\n");
+
   return (
     <div>
       <Head>
-        <meta name="image" content={image} />
-        <meta name="description" content={post.slice(0, 100)} />
-        <meta name="title" content={title}></meta>
+        <meta name="image" content={image}></meta>
+        <meta
+          name="description"
+          content={post.replace("\n", "").slice(0, 100)}
+        ></meta>
+        <meta
+          name="title"
+          content={splitTitle.length > 1 ? splitTitle[1] : splitTitle[0]}
+        ></meta>
         <title>{title}</title>
       </Head>
       <div className="flex justify-center pt-20">
@@ -38,11 +46,13 @@ const Blog = ({ title, image, post }) => {
 
                 <p
                   id="title"
-                  className="text-xl capitalize font-semibold text-gray-900"
+                  className="text-xl capitalize font-semibold text-gray-900 whitespace-pre-line"
                 >
                   {title}
                 </p>
-                <p className="mt-3 text-base text-gray-800">{post}</p>
+                <p className="mt-3 text-base text-gray-800 whitespace-pre-line">
+                  {post}
+                </p>
               </div>
             </div>
           </div>

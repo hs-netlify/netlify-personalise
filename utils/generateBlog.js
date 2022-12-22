@@ -1,5 +1,22 @@
 export const generateBlog = async (query) => {
   try {
+    const resTitle = await fetch("https://api.openai.com/v1/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "text-curie-001",
+        prompt: `Write me a blog post title about ${query}`,
+        max_tokens: 2000,
+      }),
+    });
+
+    const dataTitle = await resTitle.json();
+
+    const title = dataTitle.choices[0].text;
+
     const res = await fetch("https://api.openai.com/v1/completions", {
       method: "POST",
       headers: {
@@ -7,22 +24,15 @@ export const generateBlog = async (query) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "text-davinci-003",
-        prompt: `Write me a blog post about ${query} including a title`,
+        model: "text-curie-001",
+        prompt: `Write me a blog post about ${title}`,
         max_tokens: 2000,
       }),
     });
 
     const data = await res.json();
 
-    const text = data.choices[0].text.split("\n").filter((para) => para);
-
-    const title = text[0]
-      .replaceAll('"', "")
-      .replaceAll("'", "")
-      .replaceAll("Title:", "");
-    text.shift();
-    const post = text.join("\n\n");
+    const post = data.choices[0].text;
 
     const imageRes = await fetch(
       `https://serpapi.com/search.json?q=${query}&tbm=isch&ijn=0&api_key=${process.env.GOOGLE_SEARCH_API_KEY}`

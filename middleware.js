@@ -28,11 +28,26 @@ export const middleware = async (nextRequest) => {
 
     const data = await res.text();
 
-    const title = data.match(/(?:<meta name="title" content=)"(.*?)"/)[1];
-    const image = data.match(/(?:<meta name="image" content=)"(.*?)"/)[1];
-    const description = data.match(
+    const matchTitle = data.match(/(?:<meta name="title" content=)"(.*?)"/);
+    const matchImage = data.match(/(?:<meta name="image" content=)"(.*?)"/);
+    const matchDescription = data.match(
       /(?:<meta name="description" content=)"(.*?)"/
-    )[1];
+    );
+
+    try {
+      const title =
+        matchTitle && matchTitle.length == 0 ? matchTitle : matchTitle[1];
+      const image =
+        matchImage && matchImage.length == 0 ? matchImage : matchImage[1];
+      const description =
+        matchDescription && matchDescription.length == 0
+          ? matchDescription
+          : matchDescription[1];
+      console.log("title", title);
+      console.log(title, image, description);
+    } catch (error) {
+      console.log("error", error);
+    }
 
     return { title, image, description };
   };
