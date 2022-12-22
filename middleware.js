@@ -57,7 +57,6 @@ export const middleware = async (nextRequest) => {
   }
 
   if (pathname === "/home") {
-    console.log(nextRequest.nextUrl);
     const cookie = JSON.parse(
       nextRequest.cookies.get("netlifyPersonalise") || null
     );

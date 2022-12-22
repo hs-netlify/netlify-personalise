@@ -23,6 +23,8 @@ const Home = ({ products, posts }) => {
   }, [posts]);
 
   let personaliseCookie = Cookies.get("netlifyPersonalise");
+
+  console.log("pc", personaliseCookie);
   let cookies = JSON.parse(personaliseCookie ? personaliseCookie : null);
 
   const { favourite1, favourite2, favourite3 } = cookies;
@@ -58,7 +60,6 @@ const Home = ({ products, posts }) => {
               <div
                 key={post.title}
                 className="flex flex-col overflow-hidden rounded-lg shadow-lg"
-                onClick={handleClick(favouriteList[index])}
               >
                 <div className="flex-shrink-0">
                   <img
