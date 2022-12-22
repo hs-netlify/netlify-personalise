@@ -1,5 +1,5 @@
 import { MiddlewareRequest } from "@netlify/next";
-import { extractMetadata } from "link-meta-extractor";
+// import { extractMetadata } from "link-meta-extractor";
 
 const COOKIE_NAME = "ab-test";
 
@@ -62,12 +62,12 @@ export const middleware = async (nextRequest) => {
     );
     const { firstName, lastName, favourite1, favourite2, favourite3 } = cookie;
 
-    const metaInfo1 = await extractMetadata(`${origin}/blog/${favourite1}`);
-    const metaInfo2 = await extractMetadata(`${origin}/blog/${favourite2}`);
-    const metaInfo3 = await extractMetadata(`${origin}/blog/${favourite3}`);
+    // // const metaInfo1 = await extractMetadata(`${origin}/blog/${favourite1}`);
+    // // const metaInfo2 = await extractMetadata(`${origin}/blog/${favourite2}`);
+    // // const metaInfo3 = await extractMetadata(`${origin}/blog/${favourite3}`);
 
-    const posts = [metaInfo1, metaInfo2, metaInfo3];
-    response.setPageProp("posts", posts);
+    // const posts = [metaInfo1, metaInfo2, metaInfo3];
+    // response.setPageProp("posts", posts);
 
     return response;
   }
