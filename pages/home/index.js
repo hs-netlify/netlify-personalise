@@ -22,14 +22,6 @@ const Home = ({ products, posts }) => {
     setHydratedPosts(posts);
   }, [posts]);
 
-  let personaliseCookie = Cookies.get("netlifyPersonalise");
-
-  console.log("pc", personaliseCookie);
-  let cookies = JSON.parse(personaliseCookie ? personaliseCookie : null);
-
-  const { favourite1, favourite2, favourite3 } = cookies;
-  const favouriteList = [favourite1, favourite2, favourite3];
-
   const handleClick = (path) => {
     router.push(path);
   };
