@@ -45,16 +45,16 @@ export const middleware = async (nextRequest) => {
   //   return response;
   // }
 
-  if (pathname.startsWith("/static")) {
-    const message = `This was a static page but has been transformed in
-                     ${nextRequest?.geo?.city},
-                     ${nextRequest?.geo?.country} using
-                     @netlify/next in middleware.ts!`;
-    response.replaceText("#message", message);
-    response.setPageProp("message", message);
+  // if (pathname.startsWith("/static")) {
+  //   const message = `This was a static page but has been transformed in
+  //                    ${nextRequest?.geo?.city},
+  //                    ${nextRequest?.geo?.country} using
+  //                    @netlify/next in middleware.ts!`;
+  //   response.replaceText("#message", message);
+  //   response.setPageProp("message", message);
 
-    return response;
-  }
+  //   return response;
+  // }
 
   if (pathname === "/home") {
     const cookie = JSON.parse(
@@ -72,18 +72,18 @@ export const middleware = async (nextRequest) => {
     return response;
   }
 
-  if (pathname.startsWith("/blog")) {
-    const cookie = nextRequest.cookies.get("mostViewed");
+  // if (pathname.startsWith("/blog")) {
+  //   const cookie = nextRequest.cookies.get("mostViewed");
 
-    let mostViewed = JSON.parse(cookie ? cookie : null);
+  //   let mostViewed = JSON.parse(cookie ? cookie : null);
 
-    if (mostViewed) {
-      let mostViewedPosts = posts.filter((post) =>
-        mostViewed.some((postViews) => `/blog/${postViews.name}` === post.href)
-      );
+  //   if (mostViewed) {
+  //     let mostViewedPosts = posts.filter((post) =>
+  //       mostViewed.some((postViews) => `/blog/${postViews.name}` === post.href)
+  //     );
 
-      response.setPageProp("mostViewed", mostViewedPosts);
-      return response;
-    }
-  }
+  //     response.setPageProp("mostViewed", mostViewedPosts);
+  //     return response;
+  //   }
+  // }
 };
