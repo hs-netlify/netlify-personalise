@@ -1,5 +1,4 @@
 import { MiddlewareRequest } from "@netlify/next";
-// import { extractMetadata } from "link-meta-extractor";
 
 const COOKIE_NAME = "ab-test";
 
@@ -23,6 +22,20 @@ export const middleware = async (nextRequest) => {
   if (!nextRequest.cookies.get(COOKIE_NAME)) {
     response.cookies.set(COOKIE_NAME, bucket);
   }
+
+  const extractMetadata = async (slug) => {
+    const res = await fetch(`${origin}/blog/${slug}`);
+
+    const data = await res.text();
+
+    const title = data.match(/(?:<meta name="title" content=)"(.*?)"/)[1];
+    const image = data.match(/(?:<meta name="image" content=)"(.*?)"/)[1];
+    const description = data.match(
+      /(?:<meta name="description" content=)"(.*?)"/
+    )[1];
+
+    return { title, image, description };
+  };
 
   //Change background colour on homepage based of A/B
 
@@ -62,12 +75,18 @@ export const middleware = async (nextRequest) => {
     );
     const { firstName, lastName, favourite1, favourite2, favourite3 } = cookie;
 
-    // // const metaInfo1 = await extractMetadata(`${origin}/blog/${favourite1}`);
+    const meta1 = await extractMetadata(favourite1);
+    const posts = [
+      meta1,
+
+      // extractMetadata(favourite2),
+      // extractMetadata(favourite3),
+    ];
+
     // // const metaInfo2 = await extractMetadata(`${origin}/blog/${favourite2}`);
     // // const metaInfo3 = await extractMetadata(`${origin}/blog/${favourite3}`);
 
-    // const posts = [metaInfo1, metaInfo2, metaInfo3];
-    // response.setPageProp("posts", posts);
+    response.setPageProp("posts", posts);
 
     return response;
   }
