@@ -21,9 +21,9 @@ const Blog = ({ title, image, post }) => {
   return (
     <div>
       <Head>
-        <meta name="title" content={title} />
-        <meta name="image" content={image} />
+        <meta name="og:image" content={image} />
         <meta name="description" content={post.slice(0, 100)} />
+        <title>{title}</title>
       </Head>
       <div className="flex justify-center pt-20">
         <div className="w-full max-w-screen-lg">

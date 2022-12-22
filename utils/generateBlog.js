@@ -23,8 +23,6 @@ export const generateBlog = async (query) => {
       .replaceAll("Title:", "");
     text.shift();
     const post = text.join("\n\n");
-    console.log("text", title);
-    console.log("post", post);
 
     const imageRes = await fetch(
       `https://serpapi.com/search.json?q=${query}&tbm=isch&ijn=0&api_key=${process.env.GOOGLE_SEARCH_API_KEY}`

@@ -1,9 +1,10 @@
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { generateSite } from "../../utils/generateSite";
-import { fetchProducts } from "../../utils/fetchProducts";
+import { useRouter } from "next/router";
 
 export const getStaticProps = async () => {
   let products = [];
+
   let posts = [];
   return {
     props: {
@@ -14,11 +15,23 @@ export const getStaticProps = async () => {
   };
 };
 
-export const getStaticPaths = () => {
-  return { paths: [], fallback: "blocking" };
-};
-
 const Home = ({ products, posts }) => {
+  const router = useRouter();
+  const [hydratedPosts, setHydratedPosts] = useState([]);
+  useEffect(() => {
+    setHydratedPosts(posts);
+  }, [posts]);
+
+  let personaliseCookie = Cookies.get("netlifyPersonalise");
+  let cookies = JSON.parse(personaliseCookie ? personaliseCookie : null);
+
+  const { favourite1, favourite2, favourite3 } = cookies;
+  const favouriteList = [favourite1, favourite2, favourite3];
+
+  const handleClick = (path) => {
+    router.push(path);
+  };
+
   return (
     <div>
       <div
@@ -41,15 +54,16 @@ const Home = ({ products, posts }) => {
             </p>
           </div>
           <div className="mx-auto mt-12 grid max-w-lg gap-5 lg:max-w-none lg:grid-cols-3">
-            {posts.map((post) => (
+            {hydratedPosts.map((post, index) => (
               <div
                 key={post.title}
                 className="flex flex-col overflow-hidden rounded-lg shadow-lg"
+                onClick={handleClick(favouriteList[index])}
               >
                 <div className="flex-shrink-0">
                   <img
                     className="h-48 w-full object-cover"
-                    src={post.imageUrl}
+                    src={post.banner}
                     alt=""
                   />
                 </div>
