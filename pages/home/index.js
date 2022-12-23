@@ -34,7 +34,7 @@ const Home = ({ products, posts, message }) => {
   };
 
   return (
-    <div>
+    <div className="min-h-screen">
       <a
         onClick={clearCookies}
         className="fixed text-center bottom-10 w-48 z-50 bg-indigo-600 hover:bg-indigo-700 rounded text-white  p-2 text-large cursor-pointer left-10"
@@ -42,7 +42,7 @@ const Home = ({ products, posts, message }) => {
         Clear Cookies
       </a>
       <h1
-        className="text-3xl font-bold min-h-screen tracking-tight text-gray-900 px-20 py-10 bg-white shadow border-b"
+        className="text-3xl font-bold tracking-tight text-gray-900 px-20 py-10 bg-white shadow border-b"
         id="personalBanner"
       >
         {message}
