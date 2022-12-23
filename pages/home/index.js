@@ -56,7 +56,7 @@ const Home = ({ products, posts }) => {
                 <div className="flex-shrink-0">
                   <img
                     className="h-48 w-full object-cover"
-                    src={post.banner}
+                    src={post.image}
                     alt=""
                   />
                 </div>

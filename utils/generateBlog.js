@@ -9,14 +9,13 @@ export const generateBlog = async (query) => {
       body: JSON.stringify({
         model: "text-curie-001",
         prompt: `Write me a blog post title about ${query}`,
-        max_tokens: 2000,
+        max_tokens: 1000,
       }),
     });
 
     const dataTitle = await resTitle.json();
 
-    const title = dataTitle.choices[0].text;
-
+    const title = dataTitle?.choices[0].text;
     const res = await fetch("https://api.openai.com/v1/completions", {
       method: "POST",
       headers: {
@@ -26,13 +25,13 @@ export const generateBlog = async (query) => {
       body: JSON.stringify({
         model: "text-curie-001",
         prompt: `Write me a blog post about ${title}`,
-        max_tokens: 2000,
+        max_tokens: 1000,
       }),
     });
 
     const data = await res.json();
 
-    const post = data.choices[0].text;
+    const post = data?.choices[0].text;
 
     const imageRes = await fetch(
       `https://serpapi.com/search.json?q=${query}&tbm=isch&ijn=0&api_key=${process.env.GOOGLE_SEARCH_API_KEY}`

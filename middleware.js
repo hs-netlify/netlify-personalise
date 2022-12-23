@@ -24,32 +24,33 @@ export const middleware = async (nextRequest) => {
   }
 
   const extractMetadata = async (slug) => {
-    const res = await fetch(`${origin}/blog/${slug}`);
-
-    const data = await res.text();
-
-    const matchTitle = data.match(/(?:<meta name="title" content=)"(.*?)"/);
-    const matchImage = data.match(/(?:<meta name="image" content=)"(.*?)"/);
-    const matchDescription = data.match(
-      /(?:<meta name="description" content=)"(.*?)"/
-    );
-
     try {
+      const res = await fetch(`${origin}/blog/${slug}`);
+
+      const data = await res.text();
+
+      const matchTitle = data.match(/(?:<meta name="title" content=)"(.*?)"/);
+      const matchImage = data.match(/(?:<meta name="image" content=)"(.*?)"/);
+      const matchDescription = data.match(
+        /(?:<meta name="description" content=)"(.*?)"/
+      );
+
       const title =
-        matchTitle && matchTitle.length == 0 ? matchTitle : matchTitle[1];
+        matchTitle && matchTitle.length > 0
+          ? matchTitle[1].replace(/&amp;#x27;/g, "'")
+          : undefined;
+
       const image =
-        matchImage && matchImage.length == 0 ? matchImage : matchImage[1];
+        matchImage && matchImage.length > 0 ? matchImage[1] : undefined;
       const description =
-        matchDescription && matchDescription.length == 0
-          ? matchDescription
-          : matchDescription[1];
-      console.log("title", title);
-      console.log(title, image, description);
+        matchDescription && matchDescription.length > 0
+          ? matchDescription[1] + "..."
+          : undefined;
+
+      return { title, image, description };
     } catch (error) {
       console.log("error", error);
     }
-
-    return { title, image, description };
   };
 
   //Change background colour on homepage based of A/B
@@ -90,18 +91,17 @@ export const middleware = async (nextRequest) => {
     );
     const { firstName, lastName, favourite1, favourite2, favourite3 } = cookie;
 
-    const meta1 = await extractMetadata(favourite1);
-    const posts = [
-      meta1,
-
-      // extractMetadata(favourite2),
-      // extractMetadata(favourite3),
-    ];
+    let posts = await Promise.all([
+      extractMetadata(favourite1),
+      extractMetadata(favourite2),
+      extractMetadata(favourite3),
+    ]);
 
     // // const metaInfo2 = await extractMetadata(`${origin}/blog/${favourite2}`);
     // // const metaInfo3 = await extractMetadata(`${origin}/blog/${favourite3}`);
 
     response.setPageProp("posts", posts);
+    response.replaceText("#personal-banner",`Welcome ${firstName} ${lastName}`;
 
     return response;
   }

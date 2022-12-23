@@ -4,7 +4,7 @@ import Head from "next/head";
 
 export const getStaticProps = async ({ params }) => {
   const { topic } = params;
-  console.log("topic", topic);
+
   const { title, post, image } = await generateBlog(topic);
 
   return { props: { title, image, post }, revalidate: 84600 };
@@ -26,11 +26,15 @@ const Blog = ({ title, image, post }) => {
         <meta name="image" content={image}></meta>
         <meta
           name="description"
-          content={post.replace("\n", "").slice(0, 100)}
+          content={post.replaceAll("\n", "").slice(0, 100)}
         ></meta>
         <meta
           name="title"
-          content={splitTitle.length > 1 ? splitTitle[1] : splitTitle[0]}
+          content={
+            splitTitle.length > 1
+              ? splitTitle[1].replaceAll('"', "")
+              : splitTitle[0].replaceAll('"', "")
+          }
         ></meta>
         <title>{title}</title>
       </Head>
