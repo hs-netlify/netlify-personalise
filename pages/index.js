@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Switch } from "@headlessui/react";
 import Link from "next/link";
-import { generateSite } from "../utils/generateSite";
 import uniqid from "uniqid";
 import { useRouter } from "next/router";
+import Cookie from "js-cookie";
+import Cookies from "js-cookie";
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(" ");
@@ -53,16 +54,15 @@ const Landing = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const id = uniqid();
-    console.log("id", id);
 
     if (validateForm()) {
       setLoading(true);
 
       setFormData({ ...formData, id });
-      let ready = await generateSite(formData);
+      Cookies.set("netlifyPersonalise", JSON.stringify(formData));
+      let ready = await fetch("/home", { credentials: "same-origin" });
       if (ready) {
-        setLoading(false);
-        router.reload("/");
+        router.push("/home");
       }
     }
   };

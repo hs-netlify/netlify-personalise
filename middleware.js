@@ -1,4 +1,5 @@
 import { MiddlewareRequest } from "@netlify/next";
+import { NextResponse } from "next/server";
 
 const COOKIE_NAME = "ab-test";
 
@@ -10,6 +11,9 @@ export const middleware = async (nextRequest) => {
   const pathname = nextRequest.nextUrl.pathname;
   const middlewareRequest = new MiddlewareRequest(nextRequest);
   const response = await middlewareRequest.next();
+  const personalisationCookie = JSON.parse(
+    nextRequest.cookies.get("netlifyPersonalise") || null
+  );
 
   const MARKETING_BUCKETS = ["a", "b"];
   const getBucket = () =>
@@ -74,52 +78,31 @@ export const middleware = async (nextRequest) => {
   //   return response;
   // }
 
-  // if (pathname.startsWith("/static")) {
-  //   const message = `This was a static page but has been transformed in
-  //                    ${nextRequest?.geo?.city},
-  //                    ${nextRequest?.geo?.country} using
-  //                    @netlify/next in middleware.ts!`;
-  //   response.replaceText("#message", message);
-  //   response.setPageProp("message", message);
-
-  //   return response;
-  // }
-
-  if (pathname === "/home") {
-    const cookie = JSON.parse(
-      nextRequest.cookies.get("netlifyPersonalise") || null
-    );
-    const { firstName, lastName, favourite1, favourite2, favourite3 } = cookie;
-
-    let posts = await Promise.all([
-      extractMetadata(favourite1),
-      extractMetadata(favourite2),
-      extractMetadata(favourite3),
-    ]);
-
-    // // const metaInfo2 = await extractMetadata(`${origin}/blog/${favourite2}`);
-    // // const metaInfo3 = await extractMetadata(`${origin}/blog/${favourite3}`);
-
-    const message = `Welcome ${firstName} ${lastName}`;
-    response.setPageProp("posts", posts);
-    response.setPageProp("message", message);
-    response.replaceText("#personalBanner", message);
-
-    return response;
+  if (pathname === "/") {
+    if (personalisationCookie) {
+      return NextResponse.redirect(`${origin}/home`);
+    }
   }
 
-  // if (pathname.startsWith("/blog")) {
-  //   const cookie = nextRequest.cookies.get("mostViewed");
+  if (pathname === "/home") {
+    if (personalisationCookie) {
+      const { firstName, lastName, favourite1, favourite2, favourite3 } =
+        personalisationCookie;
 
-  //   let mostViewed = JSON.parse(cookie ? cookie : null);
+      let posts = await Promise.all([
+        extractMetadata(favourite1),
+        extractMetadata(favourite2),
+        extractMetadata(favourite3),
+      ]);
 
-  //   if (mostViewed) {
-  //     let mostViewedPosts = posts.filter((post) =>
-  //       mostViewed.some((postViews) => `/blog/${postViews.name}` === post.href)
-  //     );
+      const message = `Welcome ${firstName} ${lastName}`;
+      response.setPageProp("posts", posts);
+      response.setPageProp("message", message);
+      response.replaceText("#personalBanner", message);
 
-  //     response.setPageProp("mostViewed", mostViewedPosts);
-  //     return response;
-  //   }
-  // }
+      return response;
+    } else {
+      return NextResponse.redirect(`${origin}/`);
+    }
+  }
 };
