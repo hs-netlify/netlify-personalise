@@ -24,8 +24,14 @@ const Home = ({ products, posts, message }) => {
     setHydratedPosts(posts);
   }, [posts]);
 
-  const handleClick = (path) => {
-    router.push(path);
+  let netlifyPersonaliseCookie = Cookies.get("netlifyPersonalise");
+  let personalisedData = JSON.parse(
+    netlifyPersonaliseCookie ? netlifyPersonaliseCookie : null
+  );
+  console.log(personalisedData);
+  const handleClick = (index) => {
+    console.log("/blog/" + personalisedData[`favourite${index}`]);
+    router.push("/blog/" + personalisedData[`favourite${index}`]);
   };
 
   const clearCookies = () => {
@@ -34,7 +40,7 @@ const Home = ({ products, posts, message }) => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen h-full">
       <a
         onClick={clearCookies}
         className="fixed text-center bottom-10 w-48 z-50 bg-indigo-600 hover:bg-indigo-700 rounded text-white  p-2 text-large cursor-pointer left-10"
@@ -64,7 +70,11 @@ const Home = ({ products, posts, message }) => {
             {hydratedPosts.map((post, index) => (
               <div
                 key={Math.floor(Math.random() * 1000)}
-                className="flex flex-col overflow-hidden rounded-lg shadow-lg"
+                className="flex flex-col cursor-pointer hover:scale-105 transition-all duration-200 hover:opacity-60 overflow-hidden rounded-lg shadow-lg"
+                onClick={() => {
+                  console.log("index", index);
+                  handleClick(index + 1);
+                }}
               >
                 <div className="flex-shrink-0">
                   <img
