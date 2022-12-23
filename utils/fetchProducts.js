@@ -7,8 +7,11 @@ export const fetchProducts = async (query, apiKey) => {
     let data = await res.json();
 
     const { search_results: products } = data;
-
-    return products.slice(0, 5);
+    if (products.length > 0) {
+      return products.slice(0, 5);
+    } else {
+      return [];
+    }
   } catch (error) {
     console.log(error);
   }
