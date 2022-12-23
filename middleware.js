@@ -1,5 +1,6 @@
 import { MiddlewareRequest } from "@netlify/next";
 import { NextResponse } from "next/server";
+import { fetchProducts } from "./utils/fetchProducts";
 
 const COOKIE_NAME = "ab-test";
 
@@ -14,6 +15,7 @@ export const middleware = async (nextRequest) => {
   const personalisationCookie = JSON.parse(
     nextRequest.cookies.get("netlifyPersonalise") || null
   );
+  const amazonApiKey = Deno.env.get("AMAZON_API_KEY");
 
   const MARKETING_BUCKETS = ["a", "b"];
   const getBucket = () =>
@@ -56,7 +58,6 @@ export const middleware = async (nextRequest) => {
       console.log("error", error);
     }
   };
-
   //Change background colour on homepage based of A/B
 
   // if (pathname == "/") {
@@ -95,9 +96,18 @@ export const middleware = async (nextRequest) => {
         extractMetadata(favourite3),
       ]);
 
+      let allProducts = await Promise.all([
+        fetchProducts(favourite1, amazonApiKey),
+        fetchProducts(favourite2, amazonApiKey),
+        fetchProducts(favourite3, amazonApiKey),
+      ]);
+
+      let products = allProducts.flat(1);
+
       const message = `Welcome ${firstName} ${lastName}`;
       response.setPageProp("posts", posts);
       response.setPageProp("message", message);
+      response.setPageProp("products", products);
       response.replaceText("#personalBanner", message);
 
       return response;
