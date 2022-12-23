@@ -100,8 +100,10 @@ export const middleware = async (nextRequest) => {
     // // const metaInfo2 = await extractMetadata(`${origin}/blog/${favourite2}`);
     // // const metaInfo3 = await extractMetadata(`${origin}/blog/${favourite3}`);
 
+    const message = `Welcome ${firstName} ${lastName}`;
     response.setPageProp("posts", posts);
-    response.replaceText("#personal-banner",`Welcome ${firstName} ${lastName}`;
+    response.setPageProp("message", message);
+    response.replaceText("#personalBanner", message);
 
     return response;
   }

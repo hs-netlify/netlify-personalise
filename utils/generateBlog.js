@@ -15,7 +15,7 @@ export const generateBlog = async (query) => {
 
     const dataTitle = await resTitle.json();
 
-    const title = dataTitle?.choices[0].text;
+    const title = dataTitle?.choices[0].text.slice(0, 50);
     const res = await fetch("https://api.openai.com/v1/completions", {
       method: "POST",
       headers: {

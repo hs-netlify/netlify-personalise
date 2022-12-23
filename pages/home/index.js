@@ -5,17 +5,19 @@ import { useRouter } from "next/router";
 export const getStaticProps = async () => {
   let products = [];
 
+  let message = "Welcome";
   let posts = [];
   return {
     props: {
       products,
       posts,
+      message,
     },
     revalidate: 86400,
   };
 };
 
-const Home = ({ products, posts }) => {
+const Home = ({ products, posts, message }) => {
   const router = useRouter();
   const [hydratedPosts, setHydratedPosts] = useState([]);
   useEffect(() => {
@@ -28,12 +30,12 @@ const Home = ({ products, posts }) => {
 
   return (
     <div>
-      <div
+      <h1
         className="text-3xl font-bold tracking-tight text-gray-900 px-20 py-10 bg-white shadow border-b"
-        id="personal-banner"
+        id="personalBanner"
       >
-        Welcome
-      </div>
+        {message}
+      </h1>
       <div className="relative bg-gray-50 px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-24 lg:pb-28">
         <div className="absolute inset-0">
           <div className="h-1/3 bg-white sm:h-2/3" />
@@ -50,7 +52,7 @@ const Home = ({ products, posts }) => {
           <div className="mx-auto mt-12 grid max-w-lg gap-5 lg:max-w-none lg:grid-cols-3">
             {hydratedPosts.map((post, index) => (
               <div
-                key={post.title}
+                key={Math.floor(Math.random() * 1000)}
                 className="flex flex-col overflow-hidden rounded-lg shadow-lg"
               >
                 <div className="flex-shrink-0">
