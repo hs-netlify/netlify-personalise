@@ -3,8 +3,8 @@ const fetch = require("node-fetch");
 
 async function handler(event, context) {
   try {
+    const unsplashApiKey = process.env.UNSPLASH_API_KEY;
     const [, , , type, topic] = event.path.split("/");
-    console.log("gets here blog");
 
     const resTitle = await fetch("https://api.openai.com/v1/completions", {
       method: "POST",
@@ -40,12 +40,12 @@ async function handler(event, context) {
     const post = data?.choices[0].text;
 
     const imageRes = await fetch(
-      `https://serpapi.com/search.json?q=${topic}&tbm=isch&ijn=0&api_key=${process.env.GOOGLE_SEARCH_API_KEY}`
+      `https://api.unsplash.com/search/photos?page=1&per_page=1&query=${topic}&client_id=${unsplashApiKey}`
     );
 
     const imageRaw = await imageRes.json();
 
-    let image = imageRaw["images_results"][0].original;
+    let image = imageRaw["results"][0].urls.full;
 
     let json = {
       title,

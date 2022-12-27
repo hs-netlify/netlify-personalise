@@ -31,6 +31,18 @@ const Landing = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const preloadBlog = (e) => {
+    if (e.target.value) {
+      const origin =
+        typeof window !== "undefined" && window.location.origin
+          ? window.location.origin
+          : "";
+      const res = fetch(
+        `${origin}/.netlify/builders/generateBlog/${e.target.value}`
+      );
+    }
+  };
+
   const validateForm = () => {
     if (!agreed) {
       setFormError("Accept privacy policy");
@@ -150,6 +162,64 @@ const Landing = () => {
             onSubmit={handleSubmit}
             className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
           >
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="favourite1"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Favourite Thing 1
+              </label>
+              <div className="mt-1">
+                <input
+                  type="text"
+                  name="favourite1"
+                  id="favourite1"
+                  autoComplete="favourite1"
+                  onChange={handleChange}
+                  onBlur={preloadBlog}
+                  value={formData["favourite1"]}
+                  className="block w-full rounded-md text-black border-gray-300 py-3 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="favourite2"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Favourite Thing 2
+              </label>
+              <div className="mt-1">
+                <input
+                  id="favourite2"
+                  name="favourite2"
+                  onChange={handleChange}
+                  onBlur={preloadBlog}
+                  value={formData["favourite2"]}
+                  type="text"
+                  className="block w-full rounded-md text-black border-gray-300 py-3 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-2">
+              <label
+                htmlFor="favourite3"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Favourite Thing 3
+              </label>
+              <div className="mt-1">
+                <input
+                  id="favourite3"
+                  name="favourite3"
+                  onChange={handleChange}
+                  onBlur={preloadBlog}
+                  value={formData["favourite3"]}
+                  type="text"
+                  className="block w-full text-black rounded-md border-gray-300 py-3 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                />
+              </div>
+            </div>
             <div>
               <label
                 htmlFor="firstName"
@@ -189,61 +259,6 @@ const Landing = () => {
               </div>
             </div>
 
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="favourite1"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Favourite Thing 1
-              </label>
-              <div className="mt-1">
-                <input
-                  type="text"
-                  name="favourite1"
-                  id="favourite1"
-                  autoComplete="favourite1"
-                  onChange={handleChange}
-                  value={formData["favourite1"]}
-                  className="block w-full rounded-md text-black border-gray-300 py-3 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="favourite2"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Favourite Thing 2
-              </label>
-              <div className="mt-1">
-                <input
-                  id="favourite2"
-                  name="favourite2"
-                  onChange={handleChange}
-                  value={formData["favourite2"]}
-                  type="text"
-                  className="block w-full rounded-md text-black border-gray-300 py-3 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="favourite3"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Favourite Thing 3
-              </label>
-              <div className="mt-1">
-                <input
-                  id="favourite3"
-                  name="favourite3"
-                  onChange={handleChange}
-                  value={formData["favourite3"]}
-                  type="text"
-                  className="block w-full text-black rounded-md border-gray-300 py-3 px-4 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                />
-              </div>
-            </div>
             <div className="sm:col-span-2">
               <div className="flex items-start">
                 <div className="flex-shrink-0">
