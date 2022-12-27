@@ -7,7 +7,7 @@ const COOKIE_NAME = "ab-test";
 // Optional: contact a 3rd party service to get the user's bucket
 
 export const config = {
-  matcher: ["/home", "/", "/blog/:path"],
+  matcher: ["/home", "/", "/blog/:path*"],
 };
 
 export const middleware = async (nextRequest) => {
