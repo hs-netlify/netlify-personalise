@@ -38,10 +38,8 @@ export const middleware = async (nextRequest) => {
         `${origin}/.netlify/builders/generateBlog/${query}`
       );
 
-      const data = await res.text();
-      // const data2 = res.json();
-      console.log("Return", data);
-      // console.log("test2", data2);
+      const data = await res.json();
+
       return data;
     } catch (error) {
       console.log(error);
@@ -80,7 +78,6 @@ export const middleware = async (nextRequest) => {
       const { firstName, lastName, favourite1, favourite2, favourite3 } =
         personalisationCookie;
 
-      console.log("fetching posts");
       const posts = await Promise.all([
         fetchPost(favourite1),
         fetchPost(favourite2),
@@ -90,13 +87,12 @@ export const middleware = async (nextRequest) => {
       let resProducts = await fetch(
         `${origin}/.netlify/builders/fetchProducts/${favourite1}/${favourite2}/${favourite3}`
       );
-      const products = [];
+      let products = [];
 
       if (resProducts.status < 400) {
         products = await resProducts.json();
       }
-      console.log("products", products);
-      console.log("posts", posts);
+
       const message = `Welcome ${firstName} ${lastName}`;
       response.setPageProp("posts", posts);
       response.setPageProp("message", message);
