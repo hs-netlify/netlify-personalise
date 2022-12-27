@@ -33,7 +33,7 @@ export const middleware = async (nextRequest) => {
         `${origin}/.netlify/builders/generateBlog/${query}`
       );
 
-      const data = await res.json();
+      const data = JSON.parse(await res.text());
       // const data2 = res.json();
       console.log("test", data);
       // console.log("test2", data2);
@@ -87,7 +87,7 @@ export const middleware = async (nextRequest) => {
       const products = [];
 
       if (resProducts.status < 400) {
-        products = await resProducts.json();
+        products = JSON.parse(await resProducts.text());
       }
       console.log("products", products);
       console.log("posts", posts);
