@@ -5,8 +5,6 @@ async function handler(event, context) {
   try {
     const [, , , type, topic] = event.path.split("/");
 
-    console.log(topic);
-
     const resTitle = await fetch("https://api.openai.com/v1/completions", {
       method: "POST",
       headers: {
@@ -54,6 +52,7 @@ async function handler(event, context) {
       post,
     };
 
+    console.log("gets here ok", json);
     return {
       statusCode: 200,
       headers: {

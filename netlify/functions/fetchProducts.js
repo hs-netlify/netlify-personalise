@@ -12,9 +12,9 @@ async function handler(event, context) {
       );
 
       let data = await res.json();
-      console.log(data);
 
       const { products } = data;
+      console.log("products", products);
       if (products.length > 0) {
         products.slice(0, 9);
 
