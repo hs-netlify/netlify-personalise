@@ -118,10 +118,7 @@ const Home = ({ products, posts, message }) => {
               </div>
               <div className="mt-4 flex items-center justify-between text-base font-medium text-gray-900">
                 <h3>{product?.title}</h3>
-                <p>
-                  {product?.price?.symbol}
-                  {product?.price?.salePrice}
-                </p>
+                <p>{`$${product?.price?.salePrice}`}</p>
               </div>
             </a>
           ))}
