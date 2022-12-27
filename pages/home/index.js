@@ -111,7 +111,7 @@ const Home = ({ products, posts, message }) => {
             <a key={product?.name} href={product?.url} className="group">
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg sm:aspect-w-2 sm:aspect-h-3">
                 <img
-                  src={product?.thumbnailImage}
+                  src={product?.largeImage}
                   alt="Not Found"
                   className="h-full w-full object-cover object-center group-hover:opacity-75"
                 />
