@@ -82,7 +82,7 @@ export const middleware = async (nextRequest) => {
     response.setPageProp("image", post.image);
     response.rewriteHTML("#image", {
       element(element) {
-        element.setAttribute("href", post.image);
+        element.setAttribute("src", post.image);
       },
     });
     response.setPageProp("post", post.post);
