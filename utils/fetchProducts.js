@@ -1,14 +1,16 @@
 export const fetchProducts = async (query, apiKey) => {
   try {
     let res = await fetch(
-      `https://api.rainforestapi.com/request?api_key=BA31D53C9D7348BBAA0A4B0474F36471&type=search&amazon_domain=amazon.com&search_term=${query}&sort_by=price_high_to_low&page=1`
+      `https://api.bestbuy.com/v1/products(search=oven)?format=json&show=sku,name,shortDescription,thumbnailImage,url,salePrice&apiKey=lbAlYvV6yHSyjRoMhpxclGm6`
     );
 
     let data = await res.json();
 
-    const { search_results: products } = data;
+    console.log("data", data);
+
+    const { products } = data;
     if (products.length > 0) {
-      return products.slice(0, 5);
+      return products.slice(0, 9);
     } else {
       return [];
     }

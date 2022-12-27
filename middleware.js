@@ -1,6 +1,5 @@
 import { MiddlewareRequest } from "@netlify/next";
 import { NextResponse } from "next/server";
-import { fetchProducts } from "./utils/fetchProducts";
 
 const COOKIE_NAME = "ab-test";
 
@@ -28,6 +27,14 @@ export const middleware = async (nextRequest) => {
   if (!nextRequest.cookies.get(COOKIE_NAME)) {
     response.cookies.set(COOKIE_NAME, bucket);
   }
+
+  const fetchPost = async (query) => {
+    try {
+      const res = await fetch(`${origin}/odb/generateBlog/${query}`);
+      const data = res.json();
+      return data;
+    } catch (error) {}
+  };
 
   const extractMetadata = async (slug) => {
     try {
@@ -90,19 +97,17 @@ export const middleware = async (nextRequest) => {
       const { firstName, lastName, favourite1, favourite2, favourite3 } =
         personalisationCookie;
 
-      let posts = await Promise.all([
-        extractMetadata(favourite1),
-        extractMetadata(favourite2),
-        extractMetadata(favourite3),
+      const posts = await Promise.all([
+        fetchPost(favourite1),
+        fetchPost(favourite2),
+        fetchPost(favourite3),
       ]);
 
-      let allProducts = await Promise.all([
-        fetchProducts(favourite1, amazonApiKey),
-        fetchProducts(favourite2, amazonApiKey),
-        fetchProducts(favourite3, amazonApiKey),
-      ]);
+      let resProducts = await fetch(
+        `${origin}/odb/fetchProducts/${favourite1}/${favourite2}/${favourite3}`
+      );
 
-      let products = allProducts.flat(1);
+      let products = resProducts.json();
 
       const message = `Welcome ${firstName} ${lastName}`;
       response.setPageProp("posts", posts);
