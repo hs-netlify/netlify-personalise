@@ -6,6 +6,10 @@ const COOKIE_NAME = "ab-test";
 // Choose a random bucket
 // Optional: contact a 3rd party service to get the user's bucket
 
+export const config = {
+  matcher: ["/home", "/"],
+};
+
 export const middleware = async (nextRequest) => {
   const origin = nextRequest.nextUrl.origin;
   const pathname = nextRequest.nextUrl.pathname;
