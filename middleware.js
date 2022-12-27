@@ -14,7 +14,6 @@ export const middleware = async (nextRequest) => {
   const personalisationCookie = JSON.parse(
     nextRequest.cookies.get("netlifyPersonalise") || null
   );
-  const amazonApiKey = Deno.env.get("AMAZON_API_KEY");
 
   const MARKETING_BUCKETS = ["a", "b"];
   const getBucket = () =>
@@ -30,41 +29,20 @@ export const middleware = async (nextRequest) => {
 
   const fetchPost = async (query) => {
     try {
-      const res = await fetch(`${origin}/odb/generateBlog/${query}`);
-      const data = res.json();
-      return data;
-    } catch (error) {}
-  };
-
-  const extractMetadata = async (slug) => {
-    try {
-      const res = await fetch(`${origin}/blog/${slug}`);
-
-      const data = await res.text();
-
-      const matchTitle = data.match(/(?:<meta name="title" content=)"(.*?)"/);
-      const matchImage = data.match(/(?:<meta name="image" content=)"(.*?)"/);
-      const matchDescription = data.match(
-        /(?:<meta name="description" content=)"(.*?)"/
+      const res = await fetch(
+        `${origin}/.netlify/builders/generateBlog/${query}`
       );
 
-      const title =
-        matchTitle && matchTitle.length > 0
-          ? matchTitle[1].replace(/&amp;#x27;/g, "'")
-          : undefined;
-
-      const image =
-        matchImage && matchImage.length > 0 ? matchImage[1] : undefined;
-      const description =
-        matchDescription && matchDescription.length > 0
-          ? matchDescription[1] + "..."
-          : undefined;
-
-      return { title, image, description };
+      const data = await res.json();
+      // const data2 = res.json();
+      console.log("test", data);
+      // console.log("test2", data2);
+      return data;
     } catch (error) {
-      console.log("error", error);
+      console.log(error);
     }
   };
+
   //Change background colour on homepage based of A/B
 
   // if (pathname == "/") {
@@ -104,11 +82,15 @@ export const middleware = async (nextRequest) => {
       ]);
 
       let resProducts = await fetch(
-        `${origin}/odb/fetchProducts/${favourite1}/${favourite2}/${favourite3}`
+        `${origin}/.netlify/builders/fetchProducts/${favourite1}/${favourite2}/${favourite3}`
       );
+      const products = [];
 
-      let products = resProducts.json();
-
+      if (resProducts.status < 400) {
+        products = await resProducts.json();
+      }
+      console.log("products", products);
+      console.log("posts", posts);
       const message = `Welcome ${firstName} ${lastName}`;
       response.setPageProp("posts", posts);
       response.setPageProp("message", message);

@@ -6,16 +6,13 @@ async function handler(event, context) {
     const [, , type, topic1, topic2, topic3] = event.path.split("/");
     const apiKey = process.env.BEST_BUY_API_KEY;
 
-    console.log(topic1, topic2, topic3);
-
     if (topic1 && topic2 && topic3) {
       let res = await fetch(
         `https://api.bestbuy.com/v1/products(search=${topic1}|search=${topic2}|search=${topic3})?format=json&show=sku,name,shortDescription,thumbnailImage,url,salePrice&apiKey=${apiKey}`
       );
 
       let data = await res.json();
-
-      console.log("data", data);
+      console.log(data);
 
       const { products } = data;
       if (products.length > 0) {
