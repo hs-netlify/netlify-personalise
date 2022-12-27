@@ -12,7 +12,6 @@ export const getStaticProps = async () => {
       posts,
       message,
     },
-    revalidate: 86400,
   };
 };
 

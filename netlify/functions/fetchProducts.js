@@ -5,6 +5,7 @@ async function handler(event, context) {
   try {
     const [, , type, topic1, topic2, topic3] = event.path.split("/");
     const apiKey = process.env.BEST_BUY_API_KEY;
+    console.log("gets hre products");
 
     if (topic1 && topic2 && topic3) {
       let res = await fetch(
