@@ -31,14 +31,7 @@ export const middleware = async (nextRequest) => {
     try {
       console.log("fetch post", query);
       const res = await fetch(
-        "https://google.com"
-        // `${origin}/.netlify/builders/generateBlog/${query}`
-      );
-
-      console.log(
-        "response status",
-        `${origin}/.netlify/builders/generateBlog/${query}`,
-        res.status
+        `${origin}/.netlify/builders/generateBlog/${query}`
       );
 
       const data = await res.text();
