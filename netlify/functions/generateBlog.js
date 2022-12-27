@@ -45,7 +45,9 @@ async function handler(event, context) {
 
     const imageRaw = await imageRes.json();
 
-    let image = imageRaw["results"][0].urls.full;
+    let image = imageRaw["results"][0]?.urls?.full
+      ? imageRaw["results"][0]?.urls?.full
+      : "https://www.embryodigital.co.uk/wp-content/uploads/2021/11/how-long-should-blog-posts-be.jpg";
 
     let json = {
       title,
