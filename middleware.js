@@ -77,6 +77,7 @@ export const middleware = async (nextRequest) => {
     let post = await fetchPost(topic);
 
     console.log(post);
+    console.log("here we are ");
     response.setPageProp("title", post.title);
     response.replaceText("#title", post.title);
     response.setPageProp("image", post.image);

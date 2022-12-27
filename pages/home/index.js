@@ -34,13 +34,6 @@ const Home = ({ products, posts, message }) => {
     router.push("/blog/" + personalisedData[`favourite${index}`]);
   };
 
-  const preloadBlog = (topic) => {
-    const origin =
-      typeof window !== "undefined" && window.location.origin
-        ? window.location.origin
-        : "";
-    const res = fetch(`${origin}/.netlify/builders/generateBlog/${topic}`);
-  };
   const clearCookies = () => {
     Cookies.remove("netlifyPersonalise");
     router.reload(window.location.pathname);
