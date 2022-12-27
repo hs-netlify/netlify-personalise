@@ -34,7 +34,11 @@ export const middleware = async (nextRequest) => {
         `${origin}/.netlify/builders/generateBlog/${query}`
       );
 
-      console.log("response status", res.status);
+      console.log(
+        "response status",
+        `${origin}/.netlify/builders/generateBlog/${query}`,
+        res.status
+      );
 
       const data = await res.json();
       // const data2 = res.json();
