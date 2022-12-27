@@ -3,11 +3,11 @@ import { generateBlog } from "../../utils/generateBlog";
 import Head from "next/head";
 
 export const getStaticProps = async ({ params }) => {
-  const { topic } = params;
+  let title = null;
+  let image = null;
+  let post = null;
 
-  const { title, post, image } = await generateBlog(topic);
-
-  return { props: { title, image, post }, revalidate: 84600 };
+  return { props: { title, image, post } };
 };
 
 export const getStaticPaths = () => {
@@ -18,9 +18,12 @@ export const getStaticPaths = () => {
 };
 
 const Blog = ({ title, image, post }) => {
-  const splitTitle = title.split("\n\n");
+  let splitTitle = null;
+  if (title) {
+    splitTitle = title.split("\n\n");
+  }
 
-  return (
+  return title && image && post ? (
     <div>
       <Head>
         <meta name="image" content={image}></meta>
@@ -42,7 +45,12 @@ const Blog = ({ title, image, post }) => {
         <div className="w-full max-w-screen-lg">
           <div className="flex flex-col overflow-hidden rounded-lg shadow-lg ">
             <div className="flex-shrink-0">
-              <img className=" w-full h-80 object-cover" src={image} alt="" />
+              <img
+                id="image"
+                className=" w-full h-80 object-cover"
+                src={image}
+                alt=""
+              />
             </div>
             <div className="flex flex-1 flex-col justify-between bg-white p-6">
               <div className="flex-1">
@@ -54,7 +62,10 @@ const Blog = ({ title, image, post }) => {
                 >
                   {title}
                 </p>
-                <p className="mt-3 text-base text-gray-800 whitespace-pre-line">
+                <p
+                  id="post"
+                  className="mt-3 text-base text-gray-800 whitespace-pre-line"
+                >
                   {post}
                 </p>
               </div>
@@ -63,6 +74,8 @@ const Blog = ({ title, image, post }) => {
         </div>
       </div>
     </div>
+  ) : (
+    <div>Not Found</div>
   );
 };
 

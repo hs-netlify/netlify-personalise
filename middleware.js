@@ -7,7 +7,7 @@ const COOKIE_NAME = "ab-test";
 // Optional: contact a 3rd party service to get the user's bucket
 
 export const config = {
-  matcher: ["/home", "/"],
+  matcher: ["/home", "/", "/blog/:path"],
 };
 
 export const middleware = async (nextRequest) => {
@@ -33,7 +33,6 @@ export const middleware = async (nextRequest) => {
 
   const fetchPost = async (query) => {
     try {
-      console.log("fetch post", query);
       const res = await fetch(
         `${origin}/.netlify/builders/generateBlog/${query}`
       );
@@ -71,6 +70,24 @@ export const middleware = async (nextRequest) => {
     if (personalisationCookie) {
       return NextResponse.redirect(`${origin}/home`);
     }
+  }
+
+  if (pathname.startsWith("/blog")) {
+    const topic = pathname.split("/")[2];
+    let post = await fetchPost(topic);
+
+    console.log(post);
+    response.setPageProp("title", post.title);
+    response.replaceText("#title", post.title);
+    response.setPageProp("image", post.image);
+    response.rewriteHTML("#image", {
+      element(element) {
+        element.setAttribute("href", post.image);
+      },
+    });
+    response.setPageProp("post", post.post);
+    response.replaceText("#post", post.image);
+    return response;
   }
 
   if (pathname === "/home") {
