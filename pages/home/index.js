@@ -109,7 +109,7 @@ const Home = ({ products, posts, message }) => {
               href={product?.url}
               className="group text-sm"
             >
-              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden h-46 rounded-lg bg-gray-100 group-hover:opacity-75">
                 <img
                   src={product.largeImage}
                   alt="Not Found"
