@@ -120,7 +120,9 @@ const Home = ({ products, posts, message }) => {
                 {product.title}
               </h3>
               <p className="italic text-gray-500">
-                {product.shortDescription.slice(0, 20)}
+                {product.shortDescription
+                  ? product.shortDescription.slice(0, 20)
+                  : ""}
               </p>
               <p className="mt-2 font-medium text-gray-900">
                 {`$${product?.salePrice}`}
