@@ -13,19 +13,19 @@ async function handler(event, context) {
 
       let data = await res.json();
 
-      const { products } = data;
+      let { products } = data;
       console.log("products", products);
-      if (products.length > 0) {
+      if (products && products.length > 0) {
         products.slice(0, 9);
+      } else products = [];
 
-        return {
-          statusCode: 200,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(products),
-        };
-      } else throw new Error();
+      return {
+        statusCode: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(products),
+      };
     } else {
       throw new Error();
     }
