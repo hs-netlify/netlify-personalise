@@ -16,7 +16,7 @@ async function handler(event, context) {
       let { products } = data;
       console.log("products", products);
       if (products && products.length > 0) {
-        products.slice(0, 9);
+        products.slice(0, 8);
       } else products = [];
 
       return {
