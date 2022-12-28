@@ -55,7 +55,6 @@ async function handler(event, context) {
       post,
     };
 
-    console.log("gets here ok", json);
     return {
       statusCode: 200,
       headers: {
