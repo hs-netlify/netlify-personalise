@@ -113,7 +113,7 @@ const Home = ({ products, posts, message }) => {
                 <img
                   src={product.largeImage}
                   alt="Not Found"
-                  className="h-full w-full object-cover object-center"
+                  className="h-46 w-full object-cover object-center"
                 />
               </div>
               <h3 className="mt-4 font-medium text-gray-900">
