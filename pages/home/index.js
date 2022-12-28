@@ -107,7 +107,7 @@ const Home = ({ products, posts, message }) => {
             <a
               key={product?.name}
               href={product?.url}
-              className="group text-sm shadow h-72 flex justify-between flex-col"
+              className="group text-sm shadow-lg h-72  hover:scale-105 transition-all duration-200 rounded-lg flex justify-between flex-col"
             >
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden h-46 rounded-lg bg-gray-100 group-hover:opacity-75">
                 <img
@@ -121,7 +121,7 @@ const Home = ({ products, posts, message }) => {
               </h3>
               <p className="italic text-gray-500">
                 {product.shortDescription
-                  ? product.shortDescription.slice(0, 20)
+                  ? product.shortDescription.slice(0, 80)
                   : ""}
               </p>
               <p className="mt-2 font-medium text-gray-900">
