@@ -75,7 +75,7 @@ const Blog = ({ title, image, post }) => {
       </div>
     </div>
   ) : (
-    <div>Not Found</div>
+    <div></div>
   );
 };
 
