@@ -7,23 +7,24 @@ export const getStaticProps = async () => {
   let products = [];
   let message = "Welcome";
   let posts = [];
+  let currency = null;
   return {
     props: {
       products,
       posts,
       message,
+      currency,
     },
   };
 };
 
-const Home = ({ products, posts, message }) => {
+const Home = ({ products, posts, message, currency }) => {
   const router = useRouter();
   const [hydratedPosts, setHydratedPosts] = useState([]);
   const [hydratedProducts, setHydratedProducts] = useState([]);
   useEffect(() => {
     setHydratedPosts(posts);
     setHydratedProducts(products);
-    console.log("product", products);
   }, [products, posts]);
 
   let netlifyPersonaliseCookie = Cookies.get("netlifyPersonalise");
@@ -134,7 +135,8 @@ const Home = ({ products, posts, message }) => {
               </h3>
 
               <p className="mt-2 font-medium text-gray-900">
-                {`$${product?.extracted_price}`}
+                <span id="currency">{currency}</span>
+                {product?.extracted_price.toFixed(2)}
               </p>
             </a>
           ))}

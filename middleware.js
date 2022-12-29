@@ -1,5 +1,6 @@
 import { MiddlewareRequest } from "@netlify/next";
 import { NextResponse } from "next/server";
+import { getParamByISO } from "iso-country-currency";
 
 const COOKIE_NAME = "ab-test";
 
@@ -28,16 +29,22 @@ export const middleware = async (nextRequest) => {
     response.cookies.set(COOKIE_NAME, bucket);
   }
 
+  const isValidUrl =
+    !pathname.startsWith("/_next") &&
+    !pathname.startsWith("/favicon.ico") &&
+    !pathname.startsWith("/.netlify");
+
   const fetchPost = async (query) => {
     try {
-      const res = await fetch(
-        `${origin}/.netlify/builders/generateBlog/${query}`
-      );
+      if (query) {
+        const res = await fetch(
+          `${origin}/.netlify/builders/generateBlog/${query}`
+        );
 
-      console.log("res", res);
-      const data = await res.json();
+        const data = await res.json();
 
-      return data;
+        return data;
+      } else return;
     } catch (error) {
       console.log(error);
     }
@@ -66,11 +73,7 @@ export const middleware = async (nextRequest) => {
     if (personalisationCookie) {
       return NextResponse.redirect(`${origin}/home`);
     }
-  } else if (
-    !pathname.startsWith("/_next") &&
-    !pathname.startsWith("/favicon.ico") &&
-    !pathname.startsWith("/.netlify")
-  ) {
+  } else if (isValidUrl) {
     if (!personalisationCookie) {
       return NextResponse.redirect(`${origin}/`);
     }
@@ -111,11 +114,18 @@ export const middleware = async (nextRequest) => {
     if (res.status < 400) {
       products = await res.json();
     }
+    const currencyOverride =
+      middlewareRequest.nextUrl.searchParams.get("country");
+
+    let country = currencyOverride ? currencyOverride : nextRequest.geo.country;
+    let currency = getParamByISO(country, "symbol");
 
     const message = `Welcome ${firstName} ${lastName}`;
     response.setPageProp("posts", posts);
     response.setPageProp("message", message);
     response.setPageProp("products", products);
+    response.setPageProp("currency", currency);
+    response.replaceText("#currency", currency);
     response.replaceText("#personalBanner", message);
   }
   return response;
