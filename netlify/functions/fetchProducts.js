@@ -2,29 +2,37 @@ const { builder } = require("@netlify/functions");
 const fetch = require("node-fetch");
 
 async function handler(event, context) {
+  const [, , type, topic1, topic2, topic3] = event.path.split("/");
+  const apiKey = process.env.GOOGLE_SEARCH_API_KEY;
+
+  const fetchProducts = async (query) => {
+    let res = await fetch(
+      `https://serpapi.com/search.json?q=${query}&tbm=shop&hl=en&api_key=${apiKey}`
+    );
+
+    let data = await res.json();
+
+    let { shopping_results: products } = data;
+
+    return products && products.length > 0
+      ? products.slice(0, 3)
+      : (products = []);
+  };
+
   try {
-    const [, , type, topic1, topic2, topic3] = event.path.split("/");
-    const apiKey = process.env.BEST_BUY_API_KEY;
-
     if (topic1 && topic2 && topic3) {
-      let res = await fetch(
-        `https://api.bestbuy.com/v1/products(search=${topic1}|search=${topic2}|search=${topic3})?format=json&show=sku,name,largeImage,shortDescription,thumbnailImage,url,salePrice&sort=sku&apiKey=${apiKey}`
-      );
-
-      let data = await res.json();
-
-      let { products } = data;
-
-      if (products && products.length > 0) {
-        products.slice(0, 8);
-      } else products = [];
+      let products = await Promise.all([
+        fetchProducts(topic1),
+        fetchProducts(topic2),
+        fetchProducts(topic3),
+      ]);
 
       return {
         statusCode: 200,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(products),
+        body: JSON.stringify(products.flat()),
       };
     } else {
       throw new Error();

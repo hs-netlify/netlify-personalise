@@ -91,18 +91,18 @@ const Home = ({ products, posts, message }) => {
                 <div className="flex-shrink-0">
                   <img
                     className="h-48 w-full object-cover"
-                    src={post.image}
+                    src={post?.image}
                     alt=""
                   />
                 </div>
                 <div className="flex flex-1 flex-col justify-between bg-white p-6">
                   <div className="flex-1">
-                    <a href={post.href} className="mt-2 block">
+                    <a href={post?.href} className="mt-2 block">
                       <p className="text-xl font-semibold text-gray-900">
-                        {post.title}
+                        {post?.title}
                       </p>
                       <p className="mt-3 text-base text-gray-500">
-                        {post.description}
+                        {post?.description}
                       </p>
                     </a>
                   </div>
@@ -118,13 +118,13 @@ const Home = ({ products, posts, message }) => {
         <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
           {hydratedProducts.map((product) => (
             <a
-              key={product?.name}
-              href={product?.url}
+              key={product?.title}
+              href={product?.link}
               className="group text-sm bg-white shadow-lg h-72  hover:scale-105 transition-all duration-200 rounded-lg flex justify-between flex-col"
             >
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden h-46 rounded-lg bg-gray-100 group-hover:opacity-75">
                 <img
-                  src={product.largeImage}
+                  src={product?.thumbnail}
                   alt="Not Found"
                   className="h-46 w-full object-cover object-center"
                 />
@@ -132,13 +132,9 @@ const Home = ({ products, posts, message }) => {
               <h3 className="mt-4 font-medium text-gray-900">
                 {product.title}
               </h3>
-              <p className="italic text-gray-500">
-                {product.shortDescription
-                  ? product.shortDescription.slice(0, 80)
-                  : ""}
-              </p>
+
               <p className="mt-2 font-medium text-gray-900">
-                {`$${product?.salePrice}`}
+                {`$${product?.extracted_price}`}
               </p>
             </a>
           ))}

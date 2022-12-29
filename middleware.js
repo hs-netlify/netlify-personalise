@@ -3,9 +3,6 @@ import { NextResponse } from "next/server";
 
 const COOKIE_NAME = "ab-test";
 
-// Choose a random bucket
-// Optional: contact a 3rd party service to get the user's bucket
-
 export const config = {
   matcher: ["/home", "/", "/blog/:path*"],
 };
@@ -37,6 +34,7 @@ export const middleware = async (nextRequest) => {
         `${origin}/.netlify/builders/generateBlog/${query}`
       );
 
+      console.log("res", res);
       const data = await res.json();
 
       return data;
@@ -64,11 +62,15 @@ export const middleware = async (nextRequest) => {
     // });
   }
 
-  if (pathname === "/") {
+  if (pathname === "/" || !pathname) {
     if (personalisationCookie) {
       return NextResponse.redirect(`${origin}/home`);
     }
-  } else {
+  } else if (
+    !pathname.startsWith("/_next") &&
+    !pathname.startsWith("/favicon.ico") &&
+    !pathname.startsWith("/.netlify")
+  ) {
     if (!personalisationCookie) {
       return NextResponse.redirect(`${origin}/`);
     }
@@ -76,20 +78,19 @@ export const middleware = async (nextRequest) => {
 
   if (pathname.startsWith("/blog")) {
     const topic = pathname.split("/")[2];
+
     let post = await fetchPost(topic);
 
-    console.log(post);
-    console.log("here we are ");
-    response.setPageProp("title", post.title);
-    response.replaceText("#title", post.title);
-    response.setPageProp("image", post.image);
+    response.setPageProp("title", post?.title);
+    response.replaceText("#title", post?.title);
+    response.setPageProp("image", post?.image);
     response.rewriteHTML("#image", {
       element(element) {
-        element.setAttribute("src", post.image);
+        element.setAttribute("src", post?.image);
       },
     });
-    response.setPageProp("post", post.post);
-    response.replaceText("#post", post.image);
+    response.setPageProp("post", post?.post);
+    response.replaceText("#post", post?.image);
   }
 
   if (pathname === "/home") {
@@ -102,13 +103,13 @@ export const middleware = async (nextRequest) => {
       fetchPost(favourite3),
     ]);
 
-    let resProducts = await fetch(
+    let res = await fetch(
       `${origin}/.netlify/builders/fetchProducts/${favourite1}/${favourite2}/${favourite3}`
     );
     let products = [];
 
-    if (resProducts.status < 400) {
-      products = await resProducts.json();
+    if (res.status < 400) {
+      products = await res.json();
     }
 
     const message = `Welcome ${firstName} ${lastName}`;
