@@ -1,5 +1,4 @@
 import NavBar from "../../components/navBar";
-import { generateBlog } from "../../utils/generateBlog";
 
 import Head from "next/head";
 
