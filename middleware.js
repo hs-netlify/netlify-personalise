@@ -75,20 +75,19 @@ export const middleware = async (nextRequest) => {
     //         element.setAttribute("innerHTML", "<div>Working</div>");
     //       },
     //     });
-        // let fetchedResponse = new Response(page);
-        // fetchedResponse.headers.set("Content-Type", "text/html");
-        // response = new MiddlewareResponse(fetchedResponse);
-      }
-    }
-    // // response.rewriteHTML("#hero-image", {
-    // //   element(element) {
-    // //     element.setAttribute(
-    // //       "src",
-    // //       "https://images.unsplash.com/photo-1549082984-1323b94df9a6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80"
-    // //     );
-    // //   },
-    // });
+    // let fetchedResponse = new Response(page);
+    // fetchedResponse.headers.set("Content-Type", "text/html");
+    // response = new MiddlewareResponse(fetchedResponse);
   }
+
+  // // response.rewriteHTML("#hero-image", {
+  // //   element(element) {
+  // //     element.setAttribute(
+  // //       "src",
+  // //       "https://images.unsplash.com/photo-1549082984-1323b94df9a6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80"
+  // //     );
+  // //   },
+  // });
 
   if (pathname === "/" || !pathname) {
     if (personalisationCookie) {
@@ -121,6 +120,12 @@ export const middleware = async (nextRequest) => {
     const { firstName, lastName, favourite1, favourite2, favourite3 } =
       personalisationCookie;
 
+    const currencyOverride =
+      middlewareRequest.nextUrl.searchParams.get("country");
+
+    let country = currencyOverride ? currencyOverride : nextRequest.geo.country;
+    let currency = getParamByISO(country, "symbol");
+
     const posts = await Promise.all([
       fetchPost(favourite1),
       fetchPost(favourite2),
@@ -128,18 +133,13 @@ export const middleware = async (nextRequest) => {
     ]);
 
     let res = await fetch(
-      `${origin}/.netlify/builders/fetchProducts/${favourite1}/${favourite2}/${favourite3}`
+      `${origin}/.netlify/builders/fetchProducts/${favourite1}/${favourite2}/${favourite3}/${country}`
     );
     let products = [];
 
     if (res.status < 400) {
       products = await res.json();
     }
-    const currencyOverride =
-      middlewareRequest.nextUrl.searchParams.get("country");
-
-    let country = currencyOverride ? currencyOverride : nextRequest.geo.country;
-    let currency = getParamByISO(country, "symbol");
 
     const message = `Welcome ${firstName} ${lastName}`;
     response.setPageProp("posts", posts);
