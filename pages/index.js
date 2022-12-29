@@ -151,6 +151,13 @@ const Landing = () => {
           />
         </svg>
         <div className="text-center">
+          <div className="flex items-center justify-center">
+            <img
+              className="h-28 pb-4"
+              src="/images/netlify-logo-only.png"
+              alt="Not Found"
+            />
+          </div>
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             Netlify Personalise
           </h2>

@@ -33,7 +33,9 @@ export const middleware = async (nextRequest) => {
     !pathname.startsWith("/_next") &&
     !pathname.startsWith("/favicon.ico") &&
     !pathname.startsWith("/.netlify") &&
-    !pathname.startsWith("/test-b");
+    !pathname.startsWith("/test-b") &&
+    !pathname.startsWith("/images") &&
+    !pathname.startsWith("/favicon.ico");
 
   const fetchPost = async (query) => {
     try {
