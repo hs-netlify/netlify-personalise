@@ -53,6 +53,7 @@ export const middleware = async (nextRequest) => {
         element.setAttribute("style", "background-color:#3aafa9; color:white;");
       },
     });
+
     // // response.rewriteHTML("#hero-image", {
     // //   element(element) {
     // //     element.setAttribute(
@@ -61,6 +62,10 @@ export const middleware = async (nextRequest) => {
     // //     );
     // //   },
     // });
+  }
+
+  if (!personalisationCookie) {
+    return NextResponse.redirect(`${origin}/`);
   }
 
   if (pathname === "/") {
@@ -88,33 +93,29 @@ export const middleware = async (nextRequest) => {
   }
 
   if (pathname === "/home") {
-    if (personalisationCookie) {
-      const { firstName, lastName, favourite1, favourite2, favourite3 } =
-        personalisationCookie;
+    const { firstName, lastName, favourite1, favourite2, favourite3 } =
+      personalisationCookie;
 
-      const posts = await Promise.all([
-        fetchPost(favourite1),
-        fetchPost(favourite2),
-        fetchPost(favourite3),
-      ]);
+    const posts = await Promise.all([
+      fetchPost(favourite1),
+      fetchPost(favourite2),
+      fetchPost(favourite3),
+    ]);
 
-      let resProducts = await fetch(
-        `${origin}/.netlify/builders/fetchProducts/${favourite1}/${favourite2}/${favourite3}`
-      );
-      let products = [];
+    let resProducts = await fetch(
+      `${origin}/.netlify/builders/fetchProducts/${favourite1}/${favourite2}/${favourite3}`
+    );
+    let products = [];
 
-      if (resProducts.status < 400) {
-        products = await resProducts.json();
-      }
-
-      const message = `Welcome ${firstName} ${lastName}`;
-      response.setPageProp("posts", posts);
-      response.setPageProp("message", message);
-      response.setPageProp("products", products);
-      response.replaceText("#personalBanner", message);
-    } else {
-      return NextResponse.redirect(`${origin}/`);
+    if (resProducts.status < 400) {
+      products = await resProducts.json();
     }
+
+    const message = `Welcome ${firstName} ${lastName}`;
+    response.setPageProp("posts", posts);
+    response.setPageProp("message", message);
+    response.setPageProp("products", products);
+    response.replaceText("#personalBanner", message);
   }
   return response;
 };

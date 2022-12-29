@@ -24,7 +24,7 @@ const Blog = ({ title, image, post }) => {
   }
 
   return title && image && post ? (
-    <div>
+    <div className="min-h-screen h-full">
       <Head>
         <meta name="image" content={image}></meta>
         <meta
