@@ -1,5 +1,5 @@
 import NavBar from "../../components/navBar";
-import AbSwitch from "../../components/abSwitch";
+import AbSwitch from "../../components/controls";
 
 import Head from "next/head";
 
@@ -73,7 +73,7 @@ const Blog = ({ title, image, post }) => {
           </div>
         </div>
       </div>
-      <AbSwitch />
+      <AbSwitch cookies={true} />
     </div>
   ) : (
     <div></div>

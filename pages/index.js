@@ -5,7 +5,7 @@ import uniqid from "uniqid";
 import { useRouter } from "next/router";
 
 import Cookies from "js-cookie";
-import AbSwitch from "../components/abSwitch";
+import AbSwitch from "../components/controls";
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(" ");

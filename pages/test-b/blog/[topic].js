@@ -1,4 +1,4 @@
-import AbSwitch from "../../../components/abSwitch";
+import AbSwitch from "../../../components/controls";
 import NavBar from "../../../components/navBar";
 
 import Head from "next/head";

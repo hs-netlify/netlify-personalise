@@ -5,8 +5,6 @@ async function handler(event, context) {
   const [, , , type, topic1, topic2, topic3, geo] = event.path.split("/");
   const apiKey = process.env.GOOGLE_SEARCH_API_KEY;
 
-  console.log("geo", geo);
-
   const fetchProducts = async (query) => {
     let res = await fetch(
       `https://serpapi.com/search.json?q=${query}&gl=${geo}&tbm=shop&api_key=${apiKey}`
@@ -23,7 +21,6 @@ async function handler(event, context) {
 
   try {
     if (topic1 && topic2 && topic3) {
-      console.log(topic1, topic2, topic3);
       let products = await Promise.all([
         fetchProducts(topic1),
         fetchProducts(topic2),
