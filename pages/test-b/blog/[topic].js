@@ -1,5 +1,5 @@
-import NavBar from "../../components/navBar";
-import AbSwitch from "../../components/abSwitch";
+import AbSwitch from "../../../components/abSwitch";
+import NavBar from "../../../components/navBar";
 
 import Head from "next/head";
 
@@ -46,22 +46,22 @@ const Blog = ({ title, image, post }) => {
       <div className="flex justify-center py-20">
         <div className="w-full max-w-screen-lg">
           <div className="flex flex-col overflow-hidden rounded-lg shadow-lg ">
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0  border-b md:flex bg-white shadow justify-between items-center">
+              <p
+                id="title"
+                className="text-3xl px-6 py-4 py-10 text-center md:text-left  capitalize font-semibold text-gray-900 md:whitespace-pre-wrap"
+              >
+                {title}
+              </p>
               <img
                 id="image"
-                className=" w-full h-80 object-cover"
+                className=" w-full md:w-1/2 h-80 object-cover"
                 src={image}
                 alt=""
               />
             </div>
             <div className="flex flex-1 flex-col justify-between bg-white p-6">
               <div className="flex-1">
-                <p
-                  id="title"
-                  className="text-xl capitalize font-semibold text-gray-900 whitespace-pre-line"
-                >
-                  {title}
-                </p>
                 <p
                   id="post"
                   className="mt-3 text-base text-gray-800 whitespace-pre-line"

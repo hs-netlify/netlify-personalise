@@ -1,4 +1,4 @@
-import { MiddlewareRequest } from "@netlify/next";
+import { MiddlewareRequest, MiddlewareResponse } from "@netlify/next";
 import { NextResponse } from "next/server";
 import { getParamByISO } from "iso-country-currency";
 
@@ -12,7 +12,7 @@ export const middleware = async (nextRequest) => {
   const origin = nextRequest.nextUrl.origin;
   const pathname = nextRequest.nextUrl.pathname;
   const middlewareRequest = new MiddlewareRequest(nextRequest);
-  const response = await middlewareRequest.next();
+  let response = await middlewareRequest.next();
   const personalisationCookie = JSON.parse(
     nextRequest.cookies.get("netlifyPersonalise") || null
   );
@@ -32,7 +32,8 @@ export const middleware = async (nextRequest) => {
   const isValidUrl =
     !pathname.startsWith("/_next") &&
     !pathname.startsWith("/favicon.ico") &&
-    !pathname.startsWith("/.netlify");
+    !pathname.startsWith("/.netlify") &&
+    !pathname.startsWith("/test-b");
 
   const fetchPost = async (query) => {
     try {
@@ -58,7 +59,18 @@ export const middleware = async (nextRequest) => {
         element.setAttribute("style", "background-color:#3aafa9; color:white;");
       },
     });
+    if (isValidUrl) {
+      let isPage =
+        (await (await fetch(`${origin}/test-b${pathname}`)).status) < 400;
 
+      if (isPage) {
+        let page = await fetch(`${origin}/test-b${pathname}`);
+
+        let fetchedResponse = new Response(await page.text());
+        fetchedResponse.headers.set("Content-Type", "text/html");
+        response = new MiddlewareResponse(fetchedResponse);
+      }
+    }
     // // response.rewriteHTML("#hero-image", {
     // //   element(element) {
     // //     element.setAttribute(

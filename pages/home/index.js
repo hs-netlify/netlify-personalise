@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import NavBar from "../../components/navBar";
+import AbSwitch from "../../components/abSwitch";
 
 export const getStaticProps = async () => {
   let products = [];
@@ -35,11 +36,7 @@ const Home = ({ products, posts, message, currency }) => {
   const handleClick = (index) => {
     router.push("/blog/" + personalisedData[`favourite${index}`]);
   };
-  const handleABSwitch = () => {
-    let bucket = Cookies.get("ab-test");
-    Cookies.set("ab-test", bucket === "a" ? "b" : "a");
-    router.reload(window.location.pathname);
-  };
+
   const clearCookies = () => {
     Cookies.remove("netlifyPersonalise");
     router.reload(window.location.pathname);
@@ -48,12 +45,7 @@ const Home = ({ products, posts, message, currency }) => {
   return (
     <div id="main-body" className="min-h-screen h-full">
       <NavBar className="z-10" />
-      <a
-        onClick={handleABSwitch}
-        className="fixed text-center bottom-24 w-48 z-50 bg-indigo-600 hover:bg-indigo-700 rounded text-white  p-2 text-large cursor-pointer left-10"
-      >
-        Switch A/B Test
-      </a>
+
       <a
         onClick={clearCookies}
         className="fixed text-center bottom-10 w-48 z-50 bg-indigo-600 hover:bg-indigo-700 rounded text-white  p-2 text-large cursor-pointer left-10"
@@ -163,6 +155,7 @@ const Home = ({ products, posts, message, currency }) => {
           ))}
         </div>
       </div>
+      <AbSwitch />
     </div>
   );
 };

@@ -3,8 +3,9 @@ import { Switch } from "@headlessui/react";
 import Link from "next/link";
 import uniqid from "uniqid";
 import { useRouter } from "next/router";
-import Cookie from "js-cookie";
+
 import Cookies from "js-cookie";
+import AbSwitch from "../components/abSwitch";
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(" ");
@@ -63,11 +64,7 @@ const Landing = () => {
     setFormError(null);
     return true;
   };
-  const handleABSwitch = () => {
-    let bucket = Cookies.get("ab-test");
-    Cookies.set("ab-test", bucket === "a" ? "b" : "a");
-    router.reload(window.location.pathname);
-  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const id = uniqid();
@@ -86,12 +83,6 @@ const Landing = () => {
 
   return (
     <div className="overflow-hidden min-h-screen py-16 px-4 sm:px-6 lg:px-8 lg:py-24">
-      <a
-        onClick={handleABSwitch}
-        className="fixed text-center bottom-10 w-48 z-50 bg-indigo-600 hover:bg-indigo-700 rounded text-white  p-2 text-large cursor-pointer left-10"
-      >
-        Switch A/B Test
-      </a>
       <div className="relative mx-auto max-w-xl">
         <svg
           className="absolute left-full translate-x-1/2 transform"
@@ -344,6 +335,7 @@ const Landing = () => {
           </div>
         </div>
       )}
+      <AbSwitch />
     </div>
   );
 };
