@@ -1,3 +1,4 @@
+import NavBar from "../../components/navBar";
 import { generateBlog } from "../../utils/generateBlog";
 
 import Head from "next/head";
@@ -41,6 +42,7 @@ const Blog = ({ title, image, post }) => {
         ></meta>
         <title>{title}</title>
       </Head>
+      <NavBar />
       <div className="flex justify-center pt-20">
         <div className="w-full max-w-screen-lg">
           <div className="flex flex-col overflow-hidden rounded-lg shadow-lg ">
