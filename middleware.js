@@ -59,18 +59,27 @@ export const middleware = async (nextRequest) => {
         element.setAttribute("style", "background-color:#3aafa9; color:white;");
       },
     });
+
+    //Testing full page rewites
     // if (isValidUrl) {
     //   let isPage =
     //     (await (await fetch(`${origin}/test-b${pathname}`)).status) < 400;
 
     //   if (isPage) {
-    //     let page = await fetch(`${origin}/test-b${pathname}`);
+    //     let page = await (await fetch(`${origin}/test-b${pathname}`)).text();
 
-    //     let fetchedResponse = new Response(await page.text());
-    //     fetchedResponse.headers.set("Content-Type", "text/html");
-    //     response = new MiddlewareResponse(fetchedResponse);
-    //   }
-    // }
+    //     console.log("here");
+    //     response.rewriteHTML("#main-body", {
+    //       element(element) {
+    //         console.log("el", element);
+    //         element.setAttribute("innerHTML", "<div>Working</div>");
+    //       },
+    //     });
+        // let fetchedResponse = new Response(page);
+        // fetchedResponse.headers.set("Content-Type", "text/html");
+        // response = new MiddlewareResponse(fetchedResponse);
+      }
+    }
     // // response.rewriteHTML("#hero-image", {
     // //   element(element) {
     // //     element.setAttribute(
