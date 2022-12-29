@@ -63,6 +63,11 @@ const Landing = () => {
     setFormError(null);
     return true;
   };
+  const handleABSwitch = () => {
+    let bucket = Cookies.get("ab-test");
+    Cookies.set("ab-test", bucket === "a" ? "b" : "a");
+    router.reload(window.location.pathname);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const id = uniqid();
@@ -80,7 +85,13 @@ const Landing = () => {
   };
 
   return (
-    <div className="overflow-hidden min-h-screen bg-white py-16 px-4 sm:px-6 lg:px-8 lg:py-24">
+    <div className="overflow-hidden min-h-screen py-16 px-4 sm:px-6 lg:px-8 lg:py-24">
+      <a
+        onClick={handleABSwitch}
+        className="fixed text-center bottom-10 w-48 z-50 bg-indigo-600 hover:bg-indigo-700 rounded text-white  p-2 text-large cursor-pointer left-10"
+      >
+        Switch A/B Test
+      </a>
       <div className="relative mx-auto max-w-xl">
         <svg
           className="absolute left-full translate-x-1/2 transform"
@@ -149,7 +160,7 @@ const Landing = () => {
           />
         </svg>
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             Netlify Personalise
           </h2>
           <p className="mt-4 text-lg leading-6 text-gray-500">
@@ -165,7 +176,7 @@ const Landing = () => {
             <div className="sm:col-span-2">
               <label
                 htmlFor="favourite1"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium "
               >
                 Favourite Thing 1
               </label>
@@ -185,7 +196,7 @@ const Landing = () => {
             <div className="sm:col-span-2">
               <label
                 htmlFor="favourite2"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium  "
               >
                 Favourite Thing 2
               </label>
@@ -204,7 +215,7 @@ const Landing = () => {
             <div className="sm:col-span-2">
               <label
                 htmlFor="favourite3"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium  "
               >
                 Favourite Thing 3
               </label>
@@ -223,7 +234,7 @@ const Landing = () => {
             <div>
               <label
                 htmlFor="firstName"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium  "
               >
                 First name
               </label>
@@ -240,10 +251,7 @@ const Landing = () => {
               </div>
             </div>
             <div>
-              <label
-                htmlFor="lastName"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="lastName" className="block text-sm font-medium  ">
                 Last name
               </label>
               <div className="mt-1">
@@ -314,7 +322,7 @@ const Landing = () => {
         </div>
       </div>
       {loading && (
-        <div className="fixed top-0 left-0 flex justify-center items-center flex-col w-screen h-screen bg-black bg-opacity-80 z-20">
+        <div className="fixed top-0 left-0 flex justify-center items-center flex-col w-screen h-screen bg-black bg-opacity-90 z-20">
           <svg
             aria-hidden="true"
             className="mr-2 w-20 h-20 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
@@ -331,7 +339,7 @@ const Landing = () => {
               fill="currentFill"
             />
           </svg>
-          <div className="text-lg pt-10">
+          <div className="text-lg text-white pt-10">
             Generating your personalised Experience
           </div>
         </div>

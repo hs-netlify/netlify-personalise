@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import NavBar from "../../components/navBar";
 
 export const getStaticProps = async () => {
   let products = [];
@@ -33,14 +34,25 @@ const Home = ({ products, posts, message }) => {
   const handleClick = (index) => {
     router.push("/blog/" + personalisedData[`favourite${index}`]);
   };
-
+  const handleABSwitch = () => {
+    let bucket = Cookies.get("ab-test");
+    Cookies.set("ab-test", bucket === "a" ? "b" : "a");
+    router.reload(window.location.pathname);
+  };
   const clearCookies = () => {
     Cookies.remove("netlifyPersonalise");
     router.reload(window.location.pathname);
   };
 
   return (
-    <div className="min-h-screen h-full">
+    <div id="main-body" className="min-h-screen h-full">
+      <NavBar />
+      <a
+        onClick={handleABSwitch}
+        className="fixed text-center bottom-24 w-48 z-50 bg-indigo-600 hover:bg-indigo-700 rounded text-white  p-2 text-large cursor-pointer left-10"
+      >
+        Switch A/B Test
+      </a>
       <a
         onClick={clearCookies}
         className="fixed text-center bottom-10 w-48 z-50 bg-indigo-600 hover:bg-indigo-700 rounded text-white  p-2 text-large cursor-pointer left-10"
@@ -48,18 +60,18 @@ const Home = ({ products, posts, message }) => {
         Clear Cookies
       </a>
       <h1
-        className="text-3xl font-bold tracking-tight text-gray-900 px-20 py-10 bg-white shadow border-b"
+        className="text-3xl font-bold tracking-tight px-20 py-10  shadow border-b"
         id="personalBanner"
       >
         {message}
       </h1>
-      <div className="relative bg-gray-50 px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-24 lg:pb-28">
+      <div className="relative b px-4 pt-16 pb-20 sm:px-6 lg:px-8 lg:pt-24 lg:pb-28">
         <div className="absolute inset-0">
-          <div className="h-1/3 bg-white sm:h-2/3" />
+          <div className="h-1/3  sm:h-2/3" />
         </div>
         <div className="relative mx-auto max-w-7xl">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
               From the blog
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-xl text-gray-500 sm:mt-4">
@@ -101,13 +113,14 @@ const Home = ({ products, posts, message }) => {
         </div>
       </div>
 
+      <div className="h-20 bg-white"></div>
       <div className="mx-auto max-w-7xl overflow-hidden py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
           {hydratedProducts.map((product) => (
             <a
               key={product?.name}
               href={product?.url}
-              className="group text-sm shadow-lg h-72  hover:scale-105 transition-all duration-200 rounded-lg flex justify-between flex-col"
+              className="group text-sm bg-white shadow-lg h-72  hover:scale-105 transition-all duration-200 rounded-lg flex justify-between flex-col"
             >
               <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden h-46 rounded-lg bg-gray-100 group-hover:opacity-75">
                 <img

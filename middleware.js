@@ -47,24 +47,21 @@ export const middleware = async (nextRequest) => {
 
   //Change background colour on homepage based of A/B
 
-  // if (pathname == "/") {
-  //   if (bucket === "b") {
-  //     response.rewriteHTML("#main-body", {
-  //       element(element) {
-  //         element.setAttribute("style", "background-color:black; color:white");
-  //       },
-  //     });
-  //     response.rewriteHTML("#hero-image", {
-  //       element(element) {
-  //         element.setAttribute(
-  //           "src",
-  //           "https://images.unsplash.com/photo-1549082984-1323b94df9a6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80"
-  //         );
-  //       },
-  //     });
-  //   }
-  //   return response;
-  // }
+  if (bucket === "b") {
+    response.rewriteHTML("#main-body", {
+      element(element) {
+        element.setAttribute("style", "background-color:#3aafa9; color:white;");
+      },
+    });
+    // // response.rewriteHTML("#hero-image", {
+    // //   element(element) {
+    // //     element.setAttribute(
+    // //       "src",
+    // //       "https://images.unsplash.com/photo-1549082984-1323b94df9a6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80"
+    // //     );
+    // //   },
+    // });
+  }
 
   if (pathname === "/") {
     if (personalisationCookie) {
@@ -88,7 +85,6 @@ export const middleware = async (nextRequest) => {
     });
     response.setPageProp("post", post.post);
     response.replaceText("#post", post.image);
-    return response;
   }
 
   if (pathname === "/home") {
@@ -116,10 +112,9 @@ export const middleware = async (nextRequest) => {
       response.setPageProp("message", message);
       response.setPageProp("products", products);
       response.replaceText("#personalBanner", message);
-
-      return response;
     } else {
       return NextResponse.redirect(`${origin}/`);
     }
   }
+  return response;
 };
