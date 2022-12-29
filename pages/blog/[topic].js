@@ -43,7 +43,7 @@ const Blog = ({ title, image, post }) => {
         <title>{title}</title>
       </Head>
       <NavBar />
-      <div className="flex justify-center pt-20">
+      <div className="flex justify-center py-20">
         <div className="w-full max-w-screen-lg">
           <div className="flex flex-col overflow-hidden rounded-lg shadow-lg ">
             <div className="flex-shrink-0">
