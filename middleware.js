@@ -64,13 +64,13 @@ export const middleware = async (nextRequest) => {
     // });
   }
 
-  if (!personalisationCookie) {
-    return NextResponse.redirect(`${origin}/`);
-  }
-
   if (pathname === "/") {
     if (personalisationCookie) {
       return NextResponse.redirect(`${origin}/home`);
+    }
+  } else {
+    if (!personalisationCookie) {
+      return NextResponse.redirect(`${origin}/`);
     }
   }
 
