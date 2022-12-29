@@ -285,10 +285,9 @@ const Landing = () => {
                     <Link
                       href="https://www.netlify.com/privacy/"
                       target={"_blank"}
+                      className="font-medium text-indigo-600 underline"
                     >
-                      <span className="font-medium text-indigo-600 underline">
-                        Privacy Policy
-                      </span>
+                      Privacy Policy
                     </Link>
                     .
                   </p>

@@ -21,28 +21,29 @@ export default function NavBar() {
             <div className="flex h-16 justify-between">
               <div className="flex">
                 <div className="flex flex-shrink-0 items-center cursor-pointer w-36">
-                  <Link href="/">
+                  <a href="/">
                     <img
                       className="block h-20 w-auto lg:hidden"
                       src="images/Netlify-Logo.png"
                       alt="Your Company"
                     />
-                  </Link>
-                  <Link href="/">
+                  </a>
+                  <a href="/">
                     <img
                       className="hidden h-20 w-auto lg:block"
                       src="/images/netlify-logo.png"
                       alt="Your Company"
                     />
-                  </Link>
+                  </a>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                   {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
 
-                  <Link href="/home">
-                    <a className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900">
-                      Home
-                    </a>
+                  <Link
+                    href="/home"
+                    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                  >
+                    Home
                   </Link>
                 </div>
               </div>
