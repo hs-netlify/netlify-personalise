@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import NavBar from "../../components/navBar";
 import AbSwitch from "../../components/controls";
+import Link from "next/link";
 
 export const getStaticProps = async () => {
   let products = [];
@@ -65,34 +66,32 @@ const Home = ({ products, posts, message, currency }) => {
           </div>
           <div className="mx-auto mt-12 grid max-w-lg gap-5 lg:max-w-none lg:grid-cols-3">
             {hydratedPosts.map((post, index) => (
-              <div
-                key={Math.floor(Math.random() * 1000)}
-                className="flex flex-col cursor-pointer hover:scale-105 transition-all duration-200 hover:opacity-60 overflow-hidden rounded-lg shadow-lg"
-                onClick={() => {
-                  console.log("index", index);
-                  handleClick(index + 1);
-                }}
-              >
-                <div className="flex-shrink-0">
-                  <img
-                    className="h-48 w-full object-cover"
-                    src={post?.image}
-                    alt=""
-                  />
-                </div>
-                <div className="flex flex-1 flex-col justify-between bg-white p-6">
-                  <div className="flex-1">
-                    <a href={post?.href} className="mt-2 block">
-                      <p className="text-xl font-semibold text-gray-900">
-                        {post?.title + "  "}
-                      </p>
-                      <p className="mt-3 text-base text-gray-500">
-                        {post?.description}
-                      </p>
-                    </a>
+              <Link key={index} href={post.href}>
+                <div
+                  key={Math.floor(Math.random() * 1000)}
+                  className="flex flex-col cursor-pointer hover:scale-105 transition-all duration-200 hover:opacity-60 overflow-hidden rounded-lg shadow-lg"
+                >
+                  <div className="flex-shrink-0">
+                    <img
+                      className="h-48 w-full object-cover"
+                      src={post?.image}
+                      alt="Not Found"
+                    />
+                  </div>
+                  <div className="flex flex-1 flex-col justify-between bg-white p-6">
+                    <div className="flex-1">
+                      <div className="mt-2 block">
+                        <p className="text-xl font-semibold text-gray-900">
+                          {post?.title + "  "}
+                        </p>
+                        <p className="mt-3 text-base text-gray-500">
+                          {post?.description}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

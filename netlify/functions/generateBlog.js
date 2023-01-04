@@ -53,6 +53,7 @@ async function handler(event, context) {
       title,
       image,
       post,
+      href: `/blog/${topic}`,
     };
 
     return {

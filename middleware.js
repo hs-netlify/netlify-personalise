@@ -144,12 +144,13 @@ export const middleware = async (nextRequest) => {
     }
 
     const message = `Welcome ${firstName} ${lastName}`;
-    response.setPageProp("posts", posts);
     response.setPageProp("message", message);
+    response.replaceText("#personalBanner", message);
+
+    response.setPageProp("posts", posts);
     response.setPageProp("products", products);
     response.setPageProp("currency", currency);
     response.replaceText("#currency", currency);
-    response.replaceText("#personalBanner", message);
   }
   return response;
 };
